@@ -1,21 +1,7 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               5.1.41 - Source distribution
--- Server OS:                    Win32
--- HeidiSQL Version:             7.0.0.4362
--- --------------------------------------------------------
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
--- Dumping database structure for filesystem
 CREATE DATABASE IF NOT EXISTS `filesystem` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `filesystem`;
 
-
--- Dumping structure for table filesystem.fs_log
 CREATE TABLE IF NOT EXISTS `fs_log` (
   `log_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '日志id',
   `fs_id` int(10) DEFAULT NULL COMMENT '对应的文件树id',
@@ -31,12 +17,6 @@ CREATE TABLE IF NOT EXISTS `fs_log` (
   PRIMARY KEY (`log_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='修改历史记录';
 
--- Dumping data for table filesystem.fs_log: 0 rows
-/*!40000 ALTER TABLE `fs_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fs_log` ENABLE KEYS */;
-
-
--- Dumping structure for table filesystem.fs_tree
 CREATE TABLE IF NOT EXISTS `fs_tree` (
   `fs_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `fs_parent` int(11) NOT NULL DEFAULT '0' COMMENT '所在目录',
@@ -55,12 +35,6 @@ CREATE TABLE IF NOT EXISTS `fs_tree` (
   PRIMARY KEY (`fs_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文件目录树';
 
--- Dumping data for table filesystem.fs_tree: 0 rows
-/*!40000 ALTER TABLE `fs_tree` DISABLE KEYS */;
-/*!40000 ALTER TABLE `fs_tree` ENABLE KEYS */;
-
-
--- Dumping structure for table filesystem.fs_user
 CREATE TABLE IF NOT EXISTS `fs_user` (
   `u_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '成员ID',
   `u_parent` int(11) DEFAULT NULL COMMENT '所在组',
@@ -71,8 +45,6 @@ CREATE TABLE IF NOT EXISTS `fs_user` (
   PRIMARY KEY (`u_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='各组及成员';
 
--- Dumping data for table filesystem.fs_user: 23 rows
-/*!40000 ALTER TABLE `fs_user` DISABLE KEYS */;
 INSERT INTO `fs_user` (`u_id`, `u_parent`, `u_name`, `u_email`, `u_isgroup`, `u_grade`) VALUES
   (1, 0, '总管理员', '', 0, 99),
 	(2, 1, '技术组', '', 1, NULL),
@@ -97,7 +69,13 @@ INSERT INTO `fs_user` (`u_id`, `u_parent`, `u_name`, `u_email`, `u_isgroup`, `u_
 	(21, 1, '测试组', '', 1, NULL),
 	(22, 21, '陈欣', '', 0, 2),
 	(23, 21, '唐甜甜', '', 0, 1);
-/*!40000 ALTER TABLE `fs_user` ENABLE KEYS */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+CREATE TABLE IF NOT EXISTS `fs_sys_log` (
+	`log_id` INT(11) NOT NULL DEFAULT '0' COMMENT '日志ID',
+	`log_date` DATETIME NULL DEFAULT NULL COMMENT '日志发生时间',
+	`log_user` VARCHAR(50) NULL DEFAULT NULL COMMENT '操作者姓名',
+	`log_email` VARCHAR(50) NULL DEFAULT NULL COMMENT '操作者登录邮箱',
+	`log_desc` VARCHAR(255) NULL DEFAULT NULL COMMENT '操作描述',
+	PRIMARY KEY (`log_id`)
+) COMMENT='系统操作日志' COLLATE='utf8_general_ci' ENGINE=MyISAM;
+
